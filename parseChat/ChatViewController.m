@@ -7,8 +7,9 @@
 //
 
 #import "ChatViewController.h"
-#import "Parse.h"
+#import <Parse/Parse.h>
 #import "ChatCell.h"
+
 
 
 
@@ -26,9 +27,9 @@
     [super viewDidLoad];
     self.chatTableView.dataSource = self;
     self.chatTableView.delegate = self;
-    self.chatTableView.rowHeight = 130;
+    self.chatTableView.rowHeight = UITableViewAutomaticDimension;
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refreshControl) userInfo:nil repeats:true];
-    // Do any additional setup after loading the view.
+    [self beginRefresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,12 +70,11 @@
     if (user != nil) {
         // User found! update username label with username
         cell.usernameLabel.text = user.username;
+        cell.messageLabel.text = chatMessage[@"text"];
     } else {
         // No user found, set default username
         cell.usernameLabel.text = @"🤖";
     }
-    
-    
     return cell;
 }
 
@@ -93,7 +93,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
         if (posts != nil) {
             self.messages = posts;
-            
+                [self.chatTableView reloadData];
             // do something with the array of object returned by the call
         } else {
             NSLog(@"%@", error.localizedDescription);

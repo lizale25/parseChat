@@ -24,6 +24,16 @@
     }];
     [Parse initializeWithConfiguration:configuration];
     // Override point for customization after application launch.
+    
+    PFUser *user = [PFUser currentUser];
+    if (user != nil) {
+        NSLog(@"Welcome back %@ 😀", user.username);
+        
+        // TODO: Load Chat view controller and set as root view controller
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *chatNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"ChatNavigationController"];
+        self.window.rootViewController = chatNavigationController;
+    }
     return YES;
 }
 

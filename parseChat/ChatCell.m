@@ -10,6 +10,7 @@
 
 @implementation ChatCell
 
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
